@@ -1,0 +1,21 @@
+# Apache rewrite rules for Meireles Connect (XAMPP / mod_rewrite)
+# Place this file at the root of php_app/ (same folder as index.php)
+
+RewriteEngine On
+
+# If the file or directory exists, serve it directly (CSS, JS, images, uploads, etc.)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise, route every request through index.php (preserving the URL in REQUEST_URI)
+RewriteRule ^ index.php [L]
+
+# Security: block direct access to .php files inside controllers/, views/, config/, lib/
+RewriteRule ^(controllers|views|config|lib)/ - [F,L]
+
+# Disable directory listing
+Options -Indexes
+
+# Default character set
+AddDefaultCharset UTF-8
