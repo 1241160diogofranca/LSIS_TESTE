@@ -61,7 +61,7 @@
     "zod": "3.24.4"
   },
   "scripts": {
-    "start": "DB_USER=meireles DB_PASS=meireles_pass DB_NAME=meireles_connect php -d display_errors=1 -d error_reporting=E_ALL -S 0.0.0.0:3000 -t /app/php_app /app/php_app/router.php",
+    "start": "bash /app/php_app/start.sh",
     "build": "echo 'no build for php'",
     "test": "echo 'no tests'"
   },
