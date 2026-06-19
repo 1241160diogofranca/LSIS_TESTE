@@ -109,36 +109,32 @@ function json_response($data, int $code = 200): void {
 
 function log_event(string $action, ?string $details = null): void {
     try {
-        $db = get_db();
+        require_once __DIR__ . '/../dal/MiscDAL.php';
         $u = current_user();
-        $st = $db->prepare("INSERT INTO logs (user_id, action, details, ip) VALUES (?,?,?,?)");
-        $st->execute([$u['id'] ?? null, $action, $details, $_SERVER['REMOTE_ADDR'] ?? null]);
+        (new LogDAL())->insert([
+            'user_id' => $u['id'] ?? null,
+            'action'  => $action,
+            'details' => $details,
+            'ip'      => $_SERVER['REMOTE_ADDR'] ?? null,
+        ]);
     } catch (Throwable $e) { /* swallow */ }
 }
 
 function notify(int $user_id, string $title, string $body, string $type='info'): void {
-    try {
-        $db = get_db();
-        $st = $db->prepare("INSERT INTO notifications (user_id,title,body,type) VALUES (?,?,?,?)");
-        $st->execute([$user_id, $title, $body, $type]);
-    } catch (Throwable $e) { /* swallow */ }
+    require_once __DIR__ . '/../bll/NotificationService.php';
+    (new NotificationService())->send($user_id, $title, $body, $type);
 }
 
+// Thin wrappers — usados nas views; delegam para CartService (BLL).
 function cart_get(): array {
-    start_session_once();
-    return $_SESSION['cart'] ?? [];
-}
-function cart_set(array $cart): void {
-    start_session_once();
-    $_SESSION['cart'] = $cart;
+    require_once __DIR__ . '/../bll/CartService.php';
+    return (new CartService())->getAll();
 }
 function cart_count(): int {
-    $sum = 0;
-    foreach (cart_get() as $i) $sum += (int)$i['qty'];
-    return $sum;
+    require_once __DIR__ . '/../bll/CartService.php';
+    return (new CartService())->count();
 }
 function cart_subtotal(): float {
-    $sum = 0.0;
-    foreach (cart_get() as $i) $sum += (float)$i['price'] * (int)$i['qty'];
-    return $sum;
+    require_once __DIR__ . '/../bll/CartService.php';
+    return (new CartService())->subtotal();
 }
