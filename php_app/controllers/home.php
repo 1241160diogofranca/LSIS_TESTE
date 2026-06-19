@@ -10,4 +10,3 @@ function index() {
     require __DIR__ . '/../views/home.php';
     require __DIR__ . '/../views/_layout_bottom.php';
 }
-index();

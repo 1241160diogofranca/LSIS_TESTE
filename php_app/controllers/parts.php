@@ -15,4 +15,3 @@ function index() {
     require __DIR__ . '/../views/parts.php';
     require __DIR__ . '/../views/_layout_bottom.php';
 }
-index();

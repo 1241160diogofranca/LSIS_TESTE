@@ -17,4 +17,3 @@ function index() {
     require __DIR__ . '/../views/product.php';
     require __DIR__ . '/../views/_layout_bottom.php';
 }
-index();
