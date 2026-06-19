@@ -61,7 +61,7 @@
     "zod": "3.24.4"
   },
   "scripts": {
-    "start": "bash /app/php_app/start.sh",
+    "start": "bash /app/start_meireles.sh",
     "build": "echo 'no build for php'",
     "test": "echo 'no tests'"
   },
